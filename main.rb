@@ -12,6 +12,17 @@ module TicTacToe
     [[0,2], [1,1], [2,0]]  # diagonal
   ]
 
+  def TicTacToe.play_again?
+    puts "Wanna play again? (Y/N)"
+    play_again = gets.chomp
+    while !play_again.downcase.match?(/y|n|yes|no/)
+      puts "Please select a valid choice (y, n, yes, no):"
+      play_again = gets.chomp
+    end
+
+    play_again.match?(/y|yes/)
+  end
+
   class Game
     def initialize(player_1, player_2)
       @player_1 = player_1
@@ -42,13 +53,6 @@ module TicTacToe
       end
     end
 
-    def game_is_tie?
-      if moves_remaining == 0
-        puts "It's a tie!"
-        return true
-      end
-    end
-
     def add_player_turn(player)
       show_board
       loop do
@@ -75,6 +79,17 @@ module TicTacToe
       move_added
     end
 
+    private
+    
+    attr_accessor :winner
+    
+    def game_is_tie?
+      if moves_remaining == 0
+        puts "It's a tie!"
+        return true
+      end
+    end
+
     def find_coords(place)
       spaces.each_index do |row|
         col = spaces[row].index place.to_i
@@ -88,16 +103,12 @@ module TicTacToe
       spaces.each_with_index do |row, idx|
         puts row.map { |space| " #{space} " }.join('|')
         break if idx == 2
-
+  
         puts '-' * 11
       end
     end   
-
-    private
-
-    attr_accessor :winner
   end
-
+  
   class Player
     def initialize(name, marker)
       @name = name
@@ -111,7 +122,9 @@ module TicTacToe
   end
 end
 
-loop do
+play_again = true
+
+while play_again
   markers = %w(X O)
   puts "Time for some good ol' fashion Tic Tac Toe! \nEnter Player 1's name:"
   p1_name = gets.chomp
@@ -130,4 +143,6 @@ loop do
     
     break if game.game_over?(player)
   end
+
+  play_again = TicTacToe.play_again?
 end
