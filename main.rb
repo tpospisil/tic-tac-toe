@@ -52,7 +52,7 @@ module TicTacToe
     def add_player_turn(player)
       show_board
       loop do
-        puts "(#{player.name}:#{player.marker}) >> Please select one of the available moves:"
+        puts "<< #{player.name} (#{player.marker}) >> Please select one of the available moves:"
         place = gets.chomp
 
         break if (place.to_i.to_s == place) && add_move(player, place)
